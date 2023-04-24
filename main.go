@@ -3,6 +3,7 @@ package main
 import (
 	"common-server/config"
 	"common-server/controller"
+	"common-server/model"
 	"flag"
 	"fmt"
 	log "github.com/sirupsen/logrus"
@@ -39,7 +40,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// todo init db
+	// init db
+	err = model.InitMongoDriver()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// todo init redis
 	// start server
 	go controller.StartServer()

@@ -12,6 +12,37 @@ var (
 )
 
 type Configuration struct {
+	Mongo
+}
+
+type Mongo struct {
+	Url     string
+	DB      string
+	Timeout int
+}
+
+func defaultConfiguration() Configuration {
+	return Configuration{
+		Mongo{
+			Url:     "mongodb://localhost",
+			DB:      "test",
+			Timeout: 5,
+		},
+	}
+}
+
+func setGlobalConfig() Configuration {
+	config := defaultConfiguration()
+	if GlobalViper.InConfig("mongodb.url") {
+		config.Url = GlobalViper.GetString("mongodb.url")
+	}
+	if GlobalViper.InConfig("mongodb.db") {
+		config.DB = GlobalViper.GetString("mongodb.db")
+	}
+	if GlobalViper.InConfig("mongodb.timeout") {
+		config.Timeout = GlobalViper.GetInt("mongodb.timeout")
+	}
+	return config
 }
 
 func InitConfig() (err error) {
@@ -22,7 +53,8 @@ func InitConfig() (err error) {
 		return err
 	}
 	log.Infof("GlobalViper: %s", string(b))
-	// todo set GlobalConfig
+	// set GlobalConfig
+	GlobalConfig = setGlobalConfig()
 	log.Infof("GlobalConfig: %+v", GlobalConfig)
 	log.Infof("InitConfig success")
 	return nil
