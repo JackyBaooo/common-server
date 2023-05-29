@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  master:
+    image: redis:7.0
+    container_name: redis-1
+    command: redis-server
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./data/redis1:/data
+  slave1:
+    image: redis:7.0
+    container_name: redis-2
+    command: redis-server --replicaof master 6379
+    ports:
+      - "6381:6379"
+    volumes:
+      - ./data/redis2:/data
+    depends_on: ["master"]
+  slave2:
+    image: redis:7.0
+    container_name: redis-3
+    command: redis-server --replicaof master 6379
+    ports:
+      - "6382:6379"
+    volumes:
+      - ./data/redis3:/data
+    depends_on: ["master"]
