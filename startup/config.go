@@ -34,13 +34,13 @@ func defaultConfiguration() *Configuration {
 func setGlobalConfig() *Configuration {
 	config := defaultConfiguration()
 	if GlobalViper.InConfig("mongodb.url") {
-		config.Url = GlobalViper.GetString("mongodb.url")
+		config.Mongo.Url = GlobalViper.GetString("mongodb.url")
 	}
 	if GlobalViper.InConfig("mongodb.db") {
-		config.DB = GlobalViper.GetString("mongodb.db")
+		config.Mongo.DB = GlobalViper.GetString("mongodb.db")
 	}
 	if GlobalViper.InConfig("mongodb.timeout") {
-		config.Timeout = GlobalViper.GetInt("mongodb.timeout")
+		config.Mongo.Timeout = GlobalViper.GetInt("mongodb.timeout")
 	}
 	return config
 }

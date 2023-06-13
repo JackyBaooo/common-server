@@ -7,8 +7,14 @@
     "port": 8080
   },
   "mongodb": {
-    "url": "mongodb://localhost",
+    "url": "mongodb://root:root@10.100.97.80",
     "db": "test",
-    "timeout": 5
+    "timeout": 10
+  },
+  "redis": {
+    "addr": ["10.100.97.80:26379"],
+    "poolSize": 10,
+    "masterName": "mymaster",
+    "timeout": 10
   }
 }

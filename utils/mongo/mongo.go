@@ -1,4 +1,4 @@
-package driver
+package mongo
 
 import (
 	"common-server/startup"
@@ -11,12 +11,11 @@ import (
 )
 
 var (
-	MongoCli *mongo.Client
-	DB       *mongo.Database
-	Timeout  time.Duration
+	DB      *mongo.Database
+	Timeout time.Duration
 )
 
-func InitMongoDriver() error {
+func InitMongo() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(startup.GlobalConfig.Url))
@@ -27,8 +26,7 @@ func InitMongoDriver() error {
 	if err != nil {
 		return err
 	}
-	log.Info("InitMongoDriver success")
-	MongoCli = client
+	log.Info("InitMongo success")
 	DB = client.Database(startup.GlobalConfig.DB)
 	Timeout = time.Duration(startup.GlobalConfig.Timeout) * time.Second
 	return nil

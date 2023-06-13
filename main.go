@@ -3,6 +3,8 @@ package main
 import (
 	"common-server/controller"
 	"common-server/startup"
+	"common-server/utils/mongo"
+	"common-server/utils/redis"
 	"flag"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -26,13 +28,16 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// todo init mongo
-	//err = model.InitMongoDriver()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	// todo init redis
-	// todo init mysql
+	// init mongo
+	err = mongo.InitMongo()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// init redis
+	err = redis.InitRedis()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// start server
 	go controller.StartServer()
 	// keep server running
