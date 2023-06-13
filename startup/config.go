@@ -1,4 +1,4 @@
-package config
+package startup
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 
 var (
 	GlobalViper  *viper.Viper
-	GlobalConfig Configuration
+	GlobalConfig *Configuration
 )
 
 type Configuration struct {
@@ -21,8 +21,8 @@ type Mongo struct {
 	Timeout int
 }
 
-func defaultConfiguration() Configuration {
-	return Configuration{
+func defaultConfiguration() *Configuration {
+	return &Configuration{
 		Mongo{
 			Url:     "mongodb://localhost",
 			DB:      "test",
@@ -31,7 +31,7 @@ func defaultConfiguration() Configuration {
 	}
 }
 
-func setGlobalConfig() Configuration {
+func setGlobalConfig() *Configuration {
 	config := defaultConfiguration()
 	if GlobalViper.InConfig("mongodb.url") {
 		config.Url = GlobalViper.GetString("mongodb.url")
@@ -47,12 +47,12 @@ func setGlobalConfig() Configuration {
 
 func InitConfig() (err error) {
 	GlobalViper = viper.GetViper()
-	b, err := json.Marshal(GlobalViper.AllSettings())
+	b, err := json.MarshalIndent(GlobalViper.AllSettings(), "", "  ")
 	if err != nil {
 		log.Error(err)
 		return err
 	}
-	log.Infof("GlobalViper: %s", string(b))
+	log.Infof("GlobalViper:\n%s", string(b))
 	// set GlobalConfig
 	GlobalConfig = setGlobalConfig()
 	log.Infof("GlobalConfig: %+v", GlobalConfig)

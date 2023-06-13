@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"common-server/config"
+	"common-server/startup"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -13,8 +13,8 @@ func StartServer() {
 	r := gin.Default()
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	addRoutes(r)
-	host := config.GlobalViper.GetString("server.host")
-	port := config.GlobalViper.GetString("server.port")
+	host := startup.GlobalViper.GetString("server.host")
+	port := startup.GlobalViper.GetString("server.port")
 	addr := fmt.Sprintf("%s:%s", host, port)
 	log.Infof("server will run on %s", addr)
 	if err := r.Run(addr); err != nil {

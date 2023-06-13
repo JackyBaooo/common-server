@@ -1,4 +1,4 @@
-package config
+package startup
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 )
 
 func InitLog() (err error) {
+	log.SetReportCaller(true)
 	switch viper.GetString("log.level") {
 	case "debug":
 		log.SetLevel(log.DebugLevel)
@@ -18,6 +19,6 @@ func InitLog() (err error) {
 		err = fmt.Errorf("unknown log level: %s", viper.GetString("log.level"))
 		return err
 	}
-	log.Infof("InitLog success: %s", viper.GetString("log.level"))
+	log.Infof("InitLog success, log level: %s", viper.GetString("log.level"))
 	return nil
 }

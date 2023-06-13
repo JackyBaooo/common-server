@@ -1,7 +1,7 @@
-package model
+package driver
 
 import (
-	"common-server/config"
+	"common-server/startup"
 	"context"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,7 +19,7 @@ var (
 func InitMongoDriver() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(config.GlobalConfig.Url))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(startup.GlobalConfig.Url))
 	if err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func InitMongoDriver() error {
 	}
 	log.Info("InitMongoDriver success")
 	MongoCli = client
-	DB = client.Database(config.GlobalConfig.DB)
-	Timeout = time.Duration(config.GlobalConfig.Timeout) * time.Second
+	DB = client.Database(startup.GlobalConfig.DB)
+	Timeout = time.Duration(startup.GlobalConfig.Timeout) * time.Second
 	return nil
 }

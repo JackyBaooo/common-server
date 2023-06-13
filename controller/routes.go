@@ -1,12 +1,11 @@
 package controller
 
 import (
+	"common-server/controller/handlers"
 	"github.com/gin-gonic/gin"
 )
 
 func addRoutes(r *gin.Engine) {
 	// add routes here
-	r.GET("hello", func(ctx *gin.Context) {
-		ctx.String(200, "hello")
-	})
+	r.GET("hello", handlers.Hello)
 }
